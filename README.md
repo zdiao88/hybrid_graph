@@ -6,3 +6,5 @@ GraphChi is the first platform for graph processing on a sigle PC. The code is u
 
 DataSet: Twitter, LiveJournal,Netflix. 
 Also the testdata/Test.txt is used to verify the correctness of SGD and ALS in a intuitive way. 
+
+Redesign the architecture.
