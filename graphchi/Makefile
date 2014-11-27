@@ -29,9 +29,7 @@ sharder_basic: src/preprocessing/sharder_basic.cpp $(HEADERS)
 
 example_apps/% : example_apps/%.cpp $(HEADERS)
 	@mkdir -p bin/$(@D)
-	$(CPP) $(CPPFLAGS) -Iexample_apps/ $@.cpp -o bin/$@ $(LINKERFLAGS) 
-
-
+	$(CPP) $(CPPFLAGS) -Iexample_apps/ $@.cpp -o bin/$@ $(LINKERFLAGS)
 
 myapps/% : myapps/%.cpp $(HEADERS)
 	@mkdir -p bin/$(@D)
