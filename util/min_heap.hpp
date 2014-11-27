@@ -9,18 +9,18 @@
 #ifndef KMERGE_HPP_
 #define KMERGE_HPP_
 
-namespace graph{
-
+namespace graph {
 
 	template <typename DataType>
 	struct MergeSortInfo{
 		int arrayIndex;
 		DataType element;
-		MergeSortInfo(int _arrayIndex, DataType _element):arrayIndex(_arrayIndex),element(_element){}
-		bool operator<(MergeSortInfo<DataType> &other){
+		MergeSortInfo(int _arrayIndex, DataType _element):arrayIndex(_arrayIndex),element(_element) {}
+		bool operator<(MergeSortInfo<DataType> &other) {
 			return element < other.element;
 		}
 	};
+
 	template <typename DataType>
 	class MinHeap{
 
@@ -30,9 +30,10 @@ namespace graph{
 		int size;
 	public:
 		MinHeap(){}
-		MinHeap(int _capacity):capacity(_capacity),size(0){
+		MinHeap(int _capacity):capacity(_capacity),size(0) {
 			datas = (DataType *)calloc(capacity,sizeof(DataType));
 		}
+		
 		~MinHeap(){
 			if(datas != NULL)
 				free(datas);

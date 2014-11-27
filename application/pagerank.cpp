@@ -6,15 +6,16 @@
 #include "graph_include.hpp"
 #include "../util/result_process.hpp" 
 
-using namespace graph;
 #define INITIAL_VERTEX_DATA 0.15
+using namespace graph;
 
-struct PageRank{
+// define the vertex data type
+struct PageRank {
 	float prData;
-	PageRank():prData(INITIAL_VERTEX_DATA){}
-	PageRank(float _prData):prData(_prData){}
-	float operator/(int outc){
-		return prData/outc;
+	PageRank():prData(INITIAL_VERTEX_DATA) {}
+	PageRank(float _prData):prData(_prData) {}
+	float operator/ (int outc){
+		return prData / outc;
 	}
 };
 
@@ -22,17 +23,17 @@ typedef PageRank VertexDataType;
 typedef float EdgeDataType;
 
 
-class PageRankApp : public ApplicationBase<VertexDataType,EdgeDataType>{
+class PageRankApp : public ApplicationBase<VertexDataType,EdgeDataType> {
 
-	VertexDataType initVertexData(GraphCoreInfo &info){
+	VertexDataType initVertexData(GraphCoreInfo &info) {
 		return INITIAL_VERTEX_DATA;
 	}
 
-	void updateVertexModel(GraphVertex<VertexDataType,EdgeDataType> &vertex, GraphCoreInfo &info){
+	void updateVertexModel(GraphVertex<VertexDataType,EdgeDataType> &vertex, GraphCoreInfo &info) {
 		float sum = 0;
 		int inc = vertex.getInDegree();
-		for(int i = 0; i < inc; i ++){
-			float val = (vertex.getInEdgeData(i)) ->edgedata;
+		for (int i = 0; i < inc; i ++) {
+			float val = (vertex.getInEdgeData(i)) -> edgedata;
 			sum += val;
 		}
 
@@ -41,19 +42,26 @@ class PageRankApp : public ApplicationBase<VertexDataType,EdgeDataType>{
 	}
 };
 
-EdgeDataType relation(VertexDataType *src,int outc,VertexDataType *dst,EdgeDataType *originalEdgeData){
+/* define the relation about a edge: 
+	(1) the source vertex data;
+	(2) outdegree of source vertex;
+	(3) the destination vertex data;
+	(4) edge data
+*/
+EdgeDataType relation(VertexDataType *src, int outc, VertexDataType *dst, 
+	EdgeDataType *originalEdgeData) {
     	return *src / outc;
 }
 
-int main(int argc, char **argv){
+int main(int argc, char **argv) {
+	
 	ParseCmd pCmd(argc,argv);// parse command and load run.conf
 	MemoryAllocResult mar;// the memory allocation result
 	std::string fileName = pCmd.getConfigString("file");
 
 	GraphConversion<VertexDataType,EdgeDataType> gc(fileName);
-	//convert bipartite graph for matrix factorization.
 	//bool parameters: init vertex data or not
-	gc.convertGraphInSrcOrder(pCmd,mar,true);
+	gc.convertSrcOrderGraph(pCmd, mar, true, true);
 	// Application
 	PageRankApp app;
 	int niters = pCmd.getConfigInt("niters");

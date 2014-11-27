@@ -86,7 +86,7 @@ int main(int argc, char **argv){
 	GraphConversion<VertexDataType,EdgeDataType> gc(fileName);
 	//convert bipartite graph for matrix factorization.
 	//bool parameters: init vertex data or not
-	gc.convertBipartiteInDstOrderAsUndirecedGraph(pCmd,mar,false);
+	gc.convertDstOrderBipartiteGraphAsUndirecedGraph(pCmd, mar, false, false);
 	srand(time(NULL));
 	// put all vertex data in memory
 	vertexDatas.resize(mar.vertexNumber);

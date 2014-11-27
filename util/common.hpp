@@ -1,6 +1,5 @@
 /**
  * @author zhangdiao
- * @brief 
  * frequently-used struct and function.
  */
 
@@ -19,6 +18,12 @@
 #include <cstring>
 
 #define MAX_EDGE_NUMBER_PER_SUB (50 * 1024 * 1024)
+
+enum GraphOrder {
+	SOURCE_ORDER,
+	DESTINATION_ORDER
+};
+
 typedef long unsigned int long_t;
 typedef int vertex_t;
 typedef long edge_t;
@@ -28,18 +33,40 @@ namespace graph{
 	struct GraphInterval{
 		int first;
 		int second;
-		GraphInterval(int _first, int _second):first(_first),second(_second){}
+		GraphInterval(int _first, int _second):first(_first), second(_second) {}
 	};
 
 	struct GraphDegree{
 		int inDegree;
 		int outDegree;
-		GraphDegree(int _in,int _out):inDegree(_in),outDegree(_out){}
+		GraphDegree(int _in,int _out):inDegree(_in), outDegree(_out) {}
 	};
-	struct DataNode{
+	struct DataNode {
 		char *edgePtr;
 		char *edgeDataPtr;
 		DataNode *next;
+	};
+
+	template <typename EdgeDataType>
+	struct EdgeWithValue {
+
+		int src;
+		int dst;
+		EdgeDataType edgeValue;
+		EdgeWithValue<EdgeDataType>() {}
+		EdgeWithValue(int _src, int _dst, EdgeDataType _edgeValue):src(_src), dst(_dst), edgeValue(_edgeValue) {}
+
+		bool operator< (EdgeWithValue<EdgeDataType> &other) {
+			return dst < other.dst;
+		}
+
+		bool operator<= (EdgeWithValue<EdgeDataType> &other) {
+			return dst < other.dst;
+		}
+
+		bool operator== (EdgeWithValue<EdgeDataType> &other) {
+			return dst == other.dst;
+		}
 	};
 
 	struct Allocator{
@@ -67,6 +94,27 @@ namespace graph{
 		bool hasMemoryToCacheEdge;
 		bool hasMemoryToCacheEdgeData;
 	};
+
+	template<typename EdgeDataType>
+	EdgeWithValue<EdgeDataType> parseGraphLine(char *line) {
+		
+		char splitChar[] = "\t, ";
+		char * data;
+		data = strtok(line, splitChar);
+		int src = atoi(data);
+
+		data = strtok(NULL, splitChar);
+		int dst = atoi(data);
+
+		data = strtok(NULL, splitChar);
+		float val = 0.0F;
+		if (data != NULL) {
+			val = atof(data);;
+		}
+
+		return EdgeWithValue<EdgeDataType>(src, dst, val);
+	}
+
 	void removeN(char *str){
 		int length = (int)strlen(str);
 		if(str[length - 1] == '\n'){

@@ -66,7 +66,7 @@ int main(int argc, char **argv){
 	GraphConversion<VertexDataType,EdgeDataType> gc(fileName);
 	//convert bipartite graph for matrix factorization.
 	//bool parameters: init vertex data or not
-	gc.convertBipartiteGraphInDstOrder(pCmd,mar,true);
+	gc.convertDstOrderBipartiteGraph(pCmd, mar, true, false);
 	// Application
 	SgdApp app;
 	int niters = pCmd.getConfigInt("niters");
